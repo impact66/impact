@@ -1,75 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Príklad</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Produkty | PHP Projekt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        section {
+            padding: 60px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: calc(33% - 20px);
+            box-sizing: border-box;
+        }
+        img {
+            max-width: 100%;
+        }
+        h3 {
+            margin-top: 0;
+        }
+    </style>
 </head>
 <body>
 
-<?php include 'header.php'; ?>
-
-<div class="container">
-    <?php include 'aside.php'; ?>
-
-    <div class="content">
-        <h1>Bullshit</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo asperiores provident sed harum nam est dignissimos dolorem autem animi aspernatur veniam officia sequi doloribus quas, rem labore? Repudiandae, dolore beatae.</p>
-    </div>
-</div>
- 
-
 <?php
-$maturita = [
-    [
-        'color'=> '#696969',
-        'text' => 'Prvá veta je takáto',
-        'url' => 'https://www.zilinak.sk/',
-        'font-weight' => '200',
-        'font-size' => '20px',
-    ],
-    [
-        'color'=> '#6b8e23',
-        'text' => 'Druhá veta je takáto',
-        'url' => 'https://www.youtube.com/',
-        'font-weight' => '600',
-        'font-size' => '30px',
-    ],
-    [
-        'color'=> '#afeeee',
-        'text' => 'Tretia veta je takáto',
-        'url' => 'https://soaza.edupage.org/',
-        'font-weight' => '800',
-        'font-size' => '16px',
-    ],
-    [
-        'color'=> '#ff4500',
-        'text' => 'Štvrtá veta je takáto',
-        'url' => 'https://www.learn2code.sk/prihlasenie',
-        'font-weight' => '200',
-        'font-size' => '25px',
-    ],
-    [
-        'color'=> '#ff4538',
-        'text' => 'Piata veta je takáto',
-        'url' => 'https://www.sme.sk/',
-        'font-weight' => '800',
-        'font-size' => '18px',
-    ],
+$produkty = [
+    ["nazov" => "Tričko Beta", "kategoria" => "tricka", "cena" => 20, "zlava" => 10, "obrazok" => "img/tricko.jpg"],
+    ["nazov" => "Tričko Red", "kategoria" => "tricka", "cena" => 25, "zlava" => 5, "obrazok" => "img/tricko2.jpg"],
+    ["nazov" => "Mikina Beta", "kategoria" => "mikiny", "cena" => 40, "zlava" => 15, "obrazok" => "img/mikina.jpg"],
+    ["nazov" => "Nohavice Beta", "kategoria" => "nohavice", "cena" => 35, "zlava" => 0, "obrazok" => "img/nohavice.jpg"]
 ];
 
-foreach ($maturita as $item) {
-    echo "<p style='color: {$item['color']}; font-weight: {$item['font-weight']}; font-size: {$item['font-size']};'>
-            <a href='{$item['url']}' target='_blank' style='color: inherit;'>{$item['text']}</a>
-          </p>";
+function percent($cena, $zlava) {
+    return $cena - ($cena * $zlava / 100);
 }
+
+$sekcie = ["produkty" => "Produkty", "onas" => "O nás"];
+$kategorie = ["tricka" => "Tričká", "mikiny" => "Mikiny", "nohavice" => "Nohavice"];
 ?>
 
-<?php include 'footer.php'; ?>
+<header>
+    <nav>
+        <?php foreach($sekcie as $id => $nazov): ?>
+            <a href="#<?= $id ?>"><?= $nazov ?></a>
+        <?php endforeach; ?>
+    </nav>
+</header>
+
+<section id="produkty">
+    <h2>Naše produkty (<?= count($produkty) ?>)</h2>
+
+    <?php foreach($kategorie as $katKey => $katNazov): ?>
+        <h3><?= $katNazov ?></h3>
+        <div class="product-container">
+        <?php foreach($produkty as $produkt): ?>
+            <?php if ($produkt["kategoria"] === $katKey): ?>
+                <div class="product">
+                    <h4><?= $produkt["nazov"] ?></h4>
+                    <img src="<?= $produkt["obrazok"] ?>" alt="<?= $produkt["nazov"] ?>">
+                    <p>Cena: <?= $produkt["cena"] ?> &euro;</p>
+                    <?php if ($produkt["zlava"] > 0): ?>
+                        <p>Zľava: <?= $produkt["zlava"] ?>% => Nová cena: <strong><?= percent($produkt["cena"], $produkt["zlava"]) ?> &euro;</strong></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+</section>
+
+<section id="onas">
+    <h2>O nás</h2>
+    <p>Sme moderný obchod s oblečením. Naším cieľom je priniesť kvalitné oblečenie každému!</p>
+    <img src="img/o_nas.jpg" alt="O nas">
+</section>
 
 </body>
 </html>
