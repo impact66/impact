@@ -1,93 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<?php
 
-// Nastavenie cesty k zložke so súbormi
-$folder = 'uploads/';
-
-// Povolené prípony pre každú kategóriu
-$file_types = [
-    'word' => ['doc', 'docx'],
-    'excel' => ['xls', 'xlsx'],
-    'pdf' => ['pdf']
-];
-
-// Načítanie súborov zo zložky
-$files = scandir($folder);
-
-// Triedenie súborov do kategórií
-$sorted_files = [
-    'word' => [],
-    'excel' => [],
-    'pdf' => []
-];
-
-foreach ($files as $file) {
-    if ($file !== '.' && $file !== '..') {
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-        foreach ($file_types as $type => $extensions) {
-            if (in_array(strtolower($ext), $extensions)) {
-                $sorted_files[$type][] = $file;
-            }
-        }
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoznam súborov</title>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .column {
-            width: 30%;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-    </style>
+    <title>Príklad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="column">
-            <h3>Word súbory</h3>
-            <ul>
-                <?php foreach ($sorted_files['word'] as $file): ?>
-                    <li><a href="<?= $folder . $file ?>" download><?= $file ?></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <div class="column">
-            <h3>Excel súbory</h3>
-            <ul>
-                <?php foreach ($sorted_files['excel'] as $file): ?>
-                    <li><a href="<?= $folder . $file ?>" download><?= $file ?></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-        <div class="column">
-            <h3>PDF súbory</h3>
-            <ul>
-                <?php foreach ($sorted_files['pdf'] as $file): ?>
-                    <li><a href="<?= $folder . $file ?>" download><?= $file ?></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
+
+<?php include 'header.php'; ?>
+
+<div class="container">
+    <?php include 'aside.php'; ?>
+
+    <div class="content">
+        <h1>Bullshit</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo asperiores provident sed harum nam est dignissimos dolorem autem animi aspernatur veniam officia sequi doloribus quas, rem labore? Repudiandae, dolore beatae.</p>
     </div>
-</body>
-</html>
+</div>
+ 
 
+<?php
+$maturita = [
+    [
+        'color'=> '#696969',
+        'text' => 'Prvá veta je takáto',
+        'url' => 'https://www.zilinak.sk/',
+        'font-weight' => '200',
+        'font-size' => '20px',
+    ],
+    [
+        'color'=> '#6b8e23',
+        'text' => 'Druhá veta je takáto',
+        'url' => 'https://www.youtube.com/',
+        'font-weight' => '600',
+        'font-size' => '30px',
+    ],
+    [
+        'color'=> '#afeeee',
+        'text' => 'Tretia veta je takáto',
+        'url' => 'https://soaza.edupage.org/',
+        'font-weight' => '800',
+        'font-size' => '16px',
+    ],
+    [
+        'color'=> '#ff4500',
+        'text' => 'Štvrtá veta je takáto',
+        'url' => 'https://www.learn2code.sk/prihlasenie',
+        'font-weight' => '200',
+        'font-size' => '25px',
+    ],
+    [
+        'color'=> '#ff4538',
+        'text' => 'Piata veta je takáto',
+        'url' => 'https://www.sme.sk/',
+        'font-weight' => '800',
+        'font-size' => '18px',
+    ],
+];
 
+foreach ($maturita as $item) {
+    echo "<p style='color: {$item['color']}; font-weight: {$item['font-weight']}; font-size: {$item['font-size']};'>
+            <a href='{$item['url']}' target='_blank' style='color: inherit;'>{$item['text']}</a>
+          </p>";
+}
+?>
+
+<?php include 'footer.php'; ?>
 
 </body>
 </html>
